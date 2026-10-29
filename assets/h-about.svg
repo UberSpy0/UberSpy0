@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 72" width="1200" height="72" role="img" aria-label="About">
+<title>About</title>
+<style>
+@font-face{font-family:'Space Grotesk';font-weight:700;src:url(data:font/woff2;base64,d09GMgABAAAAAAS0AA8AAAAACQQAAARbAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGjAbgUgcVgZgP1NUQVQqAFQRCAqFRIRdCxIAATYCJAMgBCAFhDoHIBuEB8gEHurdqtedIJtmZM0ZEWVMYdaFcblzCv62wrkIcmpfqrGv/dQmrIgsoJRRLn//BS4vVNleiVjVVmgkR6A6dQTeVCnbJXa1QC/44n8EAnArXR47ApdF4FDoNeIBJI9K7gCS2McYpFOKbOvo2UniuH9+kkS+HPiLdBsbmJ3EGcmOR0fiLB7EACrHTdhMAxp2zJXWj4niG4P1PQVmFBLbOAjS2rokYFVIYEKj5HGv0sjEzRoEGrpJYLMCglVYv8reXPcQPT4y5FfqJNTskoB0gmB0SeiCLj3yMaYJacq9asYH24vDlIo0zNTV0G5txX1yoajDB4Ovws2C9t7/H8EwPSDS3Yhzq2vEN/KxC8JO2IwClnnj1iGPHxqeF3sHUq0jCyIAldXQQqfpknENF+u4aaaXKRYsa2SWUcxfYX1uPW1dbZ1vnU3UhAnSCYukiJxFnizwRLrtRxCZiLzusWeD9f63lMnJrnSnvjJxSeLSFUuX+s2YsIXiKiEcRQ9GjN6E8LtCC71juMy3kMG395hPiNCTKvw4wcd2i9CdWStvvFWEnjDMx8AQoXhchaNPQ/Cuh9KXnXcRqCPqkLHb2HlA7Tf8ZizXwLApqS599FUVjkYhGInsDseFCMUMMwLBqN+MxYQIxeMqHI1CMBLZHY4LEYoZZgSC0QTzHaEZQgmFwpBBpfCbsZjQlAy+rcJxIZQ0hHFRJMF8R2iGUEKhMGRQKZT5Tr8b3aF9wwO9mb3DA/t6oisqjrg9U3X/1015+PYXw+ta1tmf67tyRerj/9730T+r116Vlv5zavL+ZYWFzZvTiot9qY/nalnvfHLifdcGk5JY8uCj31DuYxkX//3bbUsf27lzCVMJrZ0FakndKY8FbEuu3vJcQd1Abf3MtuRt9TMDtf6J2k3eLqOrx+tRbtvkpSTBu+BpndmavLV1hlriTV3WPVXr83YYHV6vB/6Az4te8lrZqlOGT7kkcMmx4WNyw7qjw0hH7e7yokP12YEN1UNltY097f8GfjyleclDzUVY2+jwaPqR/KrDw4e7w6Qn75tCnnv24dbyI0l1vzk17bvS2g8vS704eOD0Puv2/z/SY/okAvsdl18nezWnsmHd/l+xHru3LwendgZH+B/kSSyRATpkP4XiJdbIYVq0xF/FSHByECe9r3mKSdocJQaBl1SkLxLKnuPPJCBYwyf4yWVjENAo55oKnfR+ARtr6A/YSaXFn0glroz4GTOa9PEu2sMAIwwxzLwzdJ5p5qiliD9rjj5mGWGaeYYXajF47jiFTDHLEEVsoYMedjCNnz4G6GT2nT+RAeYYo4AWphinn90MMNvzoikmcVNKIcXWJHU5t6B3T0IerIcOfHhmSzCzHJu38mKaE/fGdo41UbHT4mYnw/hZr422ZpWj1NdTNLNAPhCGzzHLZ5NSDDHS2HWBXgrpY3pOUMQg4/gYKP1iDH9fzEGT5E/MzguYKUA5v2BJWsu6jFJMAA==) format('woff2');}
+.t{font:700 32px 'Space Grotesk',sans-serif;fill:#E6EAF5;letter-spacing:-.5px}
+.ic{fill:none;stroke:url(#ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s ease-out .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.line{animation:grow 1.4s cubic-bezier(.2,.8,.2,1) .4s both;transform-origin:189.5px 0}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.spark{animation:run 5s cubic-bezier(.5,0,.5,1) 1.8s infinite;opacity:0}
+@keyframes run{0%{transform:translateX(0);opacity:0}10%{opacity:1}80%{opacity:1}100%{transform:translateX(990.5px);opacity:0}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+<defs>
+<linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<linearGradient id="rule" x1="0" x2="1"><stop offset="0" stop-color="#A78BFA" stop-opacity=".7"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></linearGradient>
+<radialGradient id="sp"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#F472B6"/><stop offset="1" stop-color="#F472B6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="8" y="14" width="46" height="46" rx="13" fill="#fff" fill-opacity=".04" stroke="#fff" stroke-opacity=".1"/>
+<g transform="translate(17 23) scale(1.17)"><path class="ic" pathLength="1" d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></g>
+<text class="t" x="76" y="49">About</text>
+<rect class="line" x="189.5" y="37" width="990.5" height="1.5" fill="url(#rule)"/>
+<circle class="spark" cx="189.5" cy="37.7" r="6" fill="url(#sp)"/>
+</svg>

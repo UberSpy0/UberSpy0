@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 72" width="1200" height="72" role="img" aria-label="GitHub">
+<title>GitHub</title>
+<style>
+@font-face{font-family:'Space Grotesk';font-weight:700;src:url(data:font/woff2;base64,d09GMgABAAAAAAUUAA8AAAAACfAAAAS4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGjYbgWAcgQwGYD9TVEFUKgBUEQgKhkSFNQsaAAE2AiQDMAQgBYQ6ByAbQAjIxOfDzfozGVg2CaxakLpBRSkVEaCSuvFgz+FMZUWUPXGPUWtqAyjRA7s4FaU/G7zfEgdIFQhU2VZHVQK7sC6MzwshK4TuU5xrmIjemZGGcLEQEACSWnSpQSBaCAQVCyEvg4ITDDJqLDorBIUFX+FhQixorrW4Grp++/ggdHYewK9kRV/n6CA0XaxwMVBoJq8Hr1iM2zeKZqigRho55UcMK65NqdaQbJPMYhAK0GU4qJwcoDpDzumhOsY4UBwyBMs5y+piVHFxcySjUm/YvRakurJIAs+wl3I6wrc17e/ptmNl/5CzHzrWcEA8GQg1QKteDRUaMin71cS9OAccjn+jAqMWug0qgHppPYCi5gHSilhiFEp1n18phzRnthaF3wsJE9yb/7+7g7mISQK5ASrkc7rtoZMjiEvFldWBjaBT3fI4EQcuGRJTCApUL4fOMGS+ONRAIwk2ONCDCUXZmPkT1XgL5SPlDeV+5U7lejmS6WoCoihY0lE8FmsdofPmNQBJmHJl0MdkjAkdX9RdArp0qWgKFtfoVqwW2YoVdq+fqDwXBK3vPJj7HO/Q+s4SznOGF72njC64T9d5dxDPTsG3He5ttcTzTNCaR54gnh28dxvAE88F43u+87sB97OvmlbeeCtg9/r9hHhOxS5OP3+C954zFTwv+C4QwhMt5Ql/65OHBJVAtZzAeE6kdq8/lAevEqhwxxtHIWqV3efO1aJHPf6lTq33DOGGBPI+zfHULQg0s5xA3adXpmDfPtembTWBE+isC4TDjpKnQe50BDrkzobirkVCm2QZSv0/dchiLxz0bczemP87RfesNmz/98V3/1m34V6j6WfD0saVkZFZpcbo6CLD9lAu6Mz7My8+4F6yBHFa23hm7nzjo5fdcu1Wz5WXT7CtmoBvzkRZy2oKnywoq7fZsorM/MPDwV2zOcvbP3sL2dsu1jP9xdsuNjIjhrQ5+RHC8tT5bS7V8vvK9kWkdprTRiqWVqSNdJrtA+aSQhtvKy60mIO/oaQQLOZY3Np5ef521+2Xy5fTzRvbZdBF5tr4qJa0YNfm5O44c0Zx3r+uH+ezlr+aFYXpEMM3JtM3BuM7JtM7sP7o+nG+rVfulV8/vNMqt244pA58r+9DDY04yOwJ3xgPwE+PNKNvPPslqY3Chi9o25LU3zQc96Uxh3fuNNymWlzlVJ76/13mZ4PfKKRZAryNn1JBeeq/aOZ/H5QARO5qtOF/gN6MWHotsqkLVsIjnhzCeioj22DwdDUPK6fD+sWrRTRDA8eX7lhKjnKKh+uNHWSLndw+/Dn4CNbjfXwde/3KxyEe90uq37TMp8J6dPjUMCDbq0MixB7yJ4kD2XaN6tCJHnRDxnixfRzDGIMZUXatMTgxih4MYxxEZCQpJfoRiSGMohtRKIMVxajCMOxwohP5GMUQxu2fjKEPEcjGEPrRgVp0YnRhoyEMQkIsIhGdHQnPkxyjdAT5shZYUQQLWRLOuLXIsTPDmOEWZw6dGF3MSqiGjD+zbiyfqnvpXJjJwoR8EEaMwfnBUsrdX9sakDEBByLhhNUDiEIX+vGSUtszfbAvBQUH5U+Siwg4phjyrY96VZU7EftfBgAAAA==) format('woff2');}
+.t{font:700 32px 'Space Grotesk',sans-serif;fill:#E6EAF5;letter-spacing:-.5px}
+.ic{fill:none;stroke:url(#ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s ease-out .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.line{animation:grow 1.4s cubic-bezier(.2,.8,.2,1) .4s both;transform-origin:207.0px 0}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.spark{animation:run 5s cubic-bezier(.5,0,.5,1) 1.8s infinite;opacity:0}
+@keyframes run{0%{transform:translateX(0);opacity:0}10%{opacity:1}80%{opacity:1}100%{transform:translateX(973.0px);opacity:0}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+<defs>
+<linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<linearGradient id="rule" x1="0" x2="1"><stop offset="0" stop-color="#A78BFA" stop-opacity=".7"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></linearGradient>
+<radialGradient id="sp"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#F472B6"/><stop offset="1" stop-color="#F472B6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="8" y="14" width="46" height="46" rx="13" fill="#fff" fill-opacity=".04" stroke="#fff" stroke-opacity=".1"/>
+<g transform="translate(17 23) scale(1.17)"><path class="ic" pathLength="1" d="M4 20V10 M10 20V4 M16 20v-7 M22 20H2"/></g>
+<text class="t" x="76" y="49">GitHub</text>
+<rect class="line" x="207.0" y="37" width="973.0" height="1.5" fill="url(#rule)"/>
+<circle class="spark" cx="207.0" cy="37.7" r="6" fill="url(#sp)"/>
+</svg>
