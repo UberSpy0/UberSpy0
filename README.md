@@ -23,13 +23,7 @@
 
 <a href="https://github.com/nighttcrawlerr/ShortHack"><img src="assets/card-saluteagent.svg" width="49%" alt="SaluteAgent: 2nd place at ShortHack × SberTech"/></a> <img src="assets/card-hotel.svg" width="49%" alt="One Step to the Perfect Hotel: Ostrovok Hackathon"/>
 
-</div>
-
-<img src="assets/h-lab.svg" width="100%" alt="In the lab"/>
-
-<div align="center">
-
-<a href="https://github.com/UberSpy0/VST-plugin-based-on-Rust"><img src="assets/card-vst.svg" width="49%" alt="Rust VST Plugin: planning"/></a> <a href="https://github.com/UberSpy0/ML-Practice-Repo"><img src="assets/card-mlpractice.svg" width="49%" alt="ML Practice: starting"/></a>
+<a href="https://github.com/UberSpy0/VST-plugin-based-on-Rust"><img src="assets/card-vst.svg" width="100%" alt="Rust VST Plugin for Ableton Live and FL Studio: in progress"/></a>
 
 </div>
 

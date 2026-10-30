@@ -299,7 +299,6 @@ def sections() -> None:
     for key, title in [
         ("about", "About"),
         ("projects", "Projects"),
-        ("lab", "In the lab"),
         ("achievements", "Achievements"),
         ("stack", "Stack"),
         ("github", "GitHub"),

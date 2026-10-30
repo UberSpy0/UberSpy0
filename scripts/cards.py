@@ -1,6 +1,7 @@
 """Project cards: one SVG per project so each can be its own link in the README."""
 
 import base64
+import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -92,24 +93,18 @@ CARDS = [
     Card(
         file="card-vst.svg",
         title="Rust VST Plugin",
-        event="Audio DSP · for Ableton & FL Studio",
-        status=[("planning", "Planning")],
-        body="A music plugin written in Rust: real-time audio processing, shipped as VST3 / CLAP.",
-        chips=["Rust", "DSP", "VST3"],
+        event="Audio DSP · for Ableton Live & FL Studio",
+        status=[("planning", "In progress")],
+        body=(
+            "A music plugin written in Rust for Ableton Live and FL Studio: real-time "
+            "sound processing on the audio thread, packaged as VST3 and CLAP."
+        ),
+        chips=["Rust", "DSP", "VST3", "CLAP"],
         accent=RUST,
         logo="icon:rust:#FF5F57",
-        height=250,
-    ),
-    Card(
-        file="card-mlpractice.svg",
-        title="ML Practice",
-        event="Exercises & experiments",
-        status=[("planning", "Starting")],
-        body="A sandbox for the hands-on part of the ML path: models, notebooks and experiments.",
-        chips=["Python", "NumPy", "scikit-learn"],
-        accent=PINK,
-        logo="icon:scikitlearn:#F472B6",
-        height=250,
+        width=1200,
+        height=360,
+        visual="wave",
     ),
 ]
 
@@ -240,6 +235,54 @@ def sort_visual(x: float, y: float, w: float, h: float) -> tuple[str, str]:
     return css, svg
 
 
+def wave_visual(x: float, y: float, w: float, h: float) -> tuple[str, str]:
+    """Dry signal in, soft-clipped signal out, scrolling; three knobs below."""
+    period = 92
+
+    def wave(cy: float, amp: float, drive: float) -> str:
+        pts, px = [], x
+        while px <= x + w + period * 2:
+            v = math.sin((px - x) / period * 2 * math.pi)
+            if drive:
+                v = math.tanh(v * drive) / math.tanh(drive)
+            pts.append(f"{px:.1f},{cy - v * amp:.1f}")
+            px += 3
+        return "M" + " L".join(pts)
+
+    dry = wave(y + 30, 22, 0)
+    wet = wave(y + 104, 26, 3.2)
+    knobs = []
+    # Solid strokes: Chrome drops a gradient stroke while its dash offset animates.
+    for k, (label, val, color) in enumerate([("GAIN", 0.72, RUST), ("DRIVE", 0.58, AMBER), ("MIX", 0.86, PINK)]):
+        cx, cy, r = x + 24 + k * (w - 120) / 2, y + h - 24, 20
+        p0 = (cx + r * math.cos(math.radians(130)), cy + r * math.sin(math.radians(130)))
+        p1 = (cx + r * math.cos(math.radians(50)), cy + r * math.sin(math.radians(50)))
+        arc = f"M{p0[0]:.1f},{p0[1]:.1f} A{r},{r} 0 1 1 {p1[0]:.1f},{p1[1]:.1f}"
+        knobs.append(
+            f'<path d="{arc}" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="4.5" stroke-linecap="round"/>'
+            f'<path d="{arc}" pathLength="1" fill="none" stroke="{color}" stroke-width="4.5" stroke-linecap="round" '
+            f'class="knob" style="animation-name:kn{k};animation-delay:{0.4 + k * 0.2:.1f}s"/>'
+            f'<text x="{cx:.1f}" y="{cy + 4:.1f}" text-anchor="middle" class="mono">{int(val * 100)}</text>'
+            f'<text x="{cx + 32:.1f}" y="{cy + 4:.1f}" class="chip">{label}</text>'
+        )
+    # Explicit keyframes per knob: var() inside @keyframes doesn't resolve in <img> SVGs.
+    css = (
+        f".scroll{{animation:scroll 2.2s linear infinite}}@keyframes scroll{{to{{transform:translateX(-{period * 2}px)}}}}"
+        ".knob{stroke-dasharray:1;stroke-dashoffset:1;animation-duration:1.4s;"
+        "animation-timing-function:cubic-bezier(.3,.8,.3,1);animation-fill-mode:forwards}"
+        + "".join(f"@keyframes kn{k}{{to{{stroke-dashoffset:{1 - v:.2f}}}}}" for k, v in enumerate([0.72, 0.58, 0.86]))
+    )
+    svg = (
+        f'<text x="{x}" y="{y - 18}" class="mono">process() <tspan fill="{MUTED}">· dry → wet · 48 kHz</tspan></text>'
+        f'<linearGradient id="wet" x1="0" x2="1"><stop offset="0" stop-color="{RUST}"/><stop offset="1" stop-color="{PINK}"/></linearGradient>'
+        f'<clipPath id="wv"><rect x="{x}" y="{y}" width="{w}" height="140"/></clipPath>'
+        f'<g clip-path="url(#wv)"><path class="scroll" d="{dry}" fill="none" stroke="{MUTED}" stroke-opacity=".5" stroke-width="2"/>'
+        f'<path class="scroll" d="{wet}" fill="none" stroke="url(#wet)" stroke-width="2.6"/></g>'
+        + "".join(knobs)
+    )
+    return css, svg
+
+
 def render(c: Card) -> None:
     W, H = c.width, c.height
     pad = 34
@@ -285,10 +328,12 @@ def render(c: Card) -> None:
     vis_css = vis_svg = ""
     if c.visual == "sort":
         vis_css, vis_svg = sort_visual(W * 0.56, 110, W * 0.44 - pad, H - 110 - pad - 10)
+    elif c.visual == "wave":
+        vis_css, vis_svg = wave_visual(W * 0.56, 124, W * 0.44 - pad, H - 124 - pad)
 
     text = c.title + c.event + c.body + c.role + "".join(c.chips) + c.link + "↗MY PART2" + "".join(
         label.upper() for _, label in c.status
-    ) + "algo-viz · insertion sort · step by step"
+    ) + "algo-viz · insertion sort · step by step" + "process() · dry → wet · 48 kHz 0123456789GAINDRIVEMIX"
     rim = f"M22,0 H{W - 22} A22,22 0 0 1 {W},22 V{H - 22} A22,22 0 0 1 {W - 22},{H} H22 A22,22 0 0 1 0,{H - 22} V22 A22,22 0 0 1 22,0 Z"
 
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 {W + 2} {H + 2}" width="{W + 2}" height="{H + 2}" role="img" aria-label="{esc(c.title)} — {esc(c.event)}">

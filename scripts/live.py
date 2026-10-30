@@ -58,6 +58,8 @@ query($login: String!, $from: DateTime!, $to: DateTime!, $recent: DateTime!) {
 
 # Coursework and this profile repo never count as "now building".
 HIDDEN = {"Python_Labs", "UberSpy0"}
+# Sandboxes: their activity counts, but the name shows as "private project".
+MASKED = {"ML-Practice-Repo"}
 
 LEVEL = {"NONE": 0, "FIRST_QUARTILE": 1, "SECOND_QUARTILE": 2, "THIRD_QUARTILE": 3, "FOURTH_QUARTILE": 4}
 BLOCK = ["#161B2E", "#1D4E6B", CYAN, VIOLET, PINK]
@@ -287,21 +289,24 @@ def now_card(user: dict) -> str:
     area = line + f" L{pts[-1][0]:.1f},150 L{pts[0][0]:.1f},150 Z"
     total14 = sum(n for _, n, _ in days)
 
+    def hidden(repo: dict) -> bool:
+        return repo["isPrivate"] or repo["name"] in MASKED
+
     if repos:
         top = repos[0]["repository"]
         count = repos[0]["contributions"]["totalCount"]
-        name = "private project" if top["isPrivate"] else top["name"]
+        name = "private project" if hidden(top) else top["name"]
         lang = top["primaryLanguage"] or {"name": "—", "color": MUTED}
         commit = ""
-        if not top["isPrivate"] and top.get("defaultBranchRef"):
+        if not hidden(top) and top.get("defaultBranchRef"):
             nodes = top["defaultBranchRef"]["target"]["history"]["nodes"]
             commit = nodes[0]["messageHeadline"][:58] if nodes else ""
         lock = (
             f'<path d="M0 6h10v8H0z M2 6V4a3 3 0 0 1 6 0v2" fill="none" stroke="{MUTED}" stroke-width="1.6" '
-            f'transform="translate(58 84)"/>' if top["isPrivate"] else ""
+            f'transform="translate(58 84)"/>' if hidden(top) else ""
         )
         others = [
-            ("private" if r["repository"]["isPrivate"] else r["repository"]["name"], r["contributions"]["totalCount"])
+            ("private" if hidden(r["repository"]) else r["repository"]["name"], r["contributions"]["totalCount"])
             for r in repos[1:3]
         ]
     else:
