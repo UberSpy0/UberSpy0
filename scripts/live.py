@@ -170,15 +170,17 @@ def stats_card(user: dict) -> str:
         ("day streak", cur),
         ("best streak", longest),
     ]
+    # Two rows on the left: totals, then streaks. The heatmap gets the right side.
     metrics = "".join(
-        f'<text class="v" x="{40 + i * 114}" y="112">{val}</text>'
-        f'<text class="m" x="{40 + i * 114}" y="138">{label}</text>'
+        f'<text class="v" x="{40 + i % 3 * 160}" y="{104 + i // 3 * 68}">{val}</text>'
+        f'<text class="m" x="{40 + i % 3 * 160}" y="{128 + i // 3 * 68}">{label}</text>'
         for i, (label, val) in enumerate(numbers)
     )
 
-    # Last 26 weeks as a one-color heatmap on the right, the card's main visual.
-    weeks = y["contributionCalendar"]["weeks"][-26:]
-    cell, step, top = 18, 21, 32
+    # Last 22 weeks as a one-color heatmap on the right, the card's main visual.
+    weeks = y["contributionCalendar"]["weeks"][-22:]
+    cell, step = 22, 26
+    top = (H - 7 * step + (step - cell)) // 2
     x0 = W - 40 - len(weeks) * step + (step - cell)
     shades = ["#141829", "#1B6496", "#2385C2", "#2FA3DF", CYAN]
     dark, lit = [], []
@@ -187,7 +189,7 @@ def stats_card(user: dict) -> str:
             level = LEVEL[d["contributionLevel"]]
             rect = (
                 f'<rect x="{x0 + wi * step}" y="{top + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
-                f'width="{cell}" height="{cell}" rx="4" fill="{shades[level]}"'
+                f'width="{cell}" height="{cell}" rx="5" fill="{shades[level]}"'
             )
             if not level:
                 dark.append(rect + "/>")
@@ -201,20 +203,21 @@ def stats_card(user: dict) -> str:
             )
     cells = "".join(dark) + f'<g filter="url(#glow)">{"".join(lit)}</g>'
 
-    langs = languages(user)
+    langs = languages(user, top=4)
+    bar_w = 500
     bar, legend, x, lx = [], [], 40.0, 40.0
     for name, color, share in langs:
-        w = (W - 80) * share
-        bar.append(f'<rect x="{x:.1f}" y="204" width="{max(w - 2, 1):.1f}" height="6" fill="{color}"/>')
+        w = bar_w * share
+        bar.append(f'<rect x="{x:.1f}" y="214" width="{max(w - 2, 1):.1f}" height="6" fill="{color}"/>')
         x += w
         label = f"{name} {share * 100:.0f}%"
         legend.append(
-            f'<circle cx="{lx + 4:.1f}" cy="235.5" r="4" fill="{color}"/>'
-            f'<text class="m" x="{lx + 14:.1f}" y="240" style="fill:{MUTED}">{esc(label)}</text>'
+            f'<circle cx="{lx + 4:.1f}" cy="241.5" r="4" fill="{color}"/>'
+            f'<text class="m" x="{lx + 14:.1f}" y="246" style="fill:{MUTED}">{esc(label)}</text>'
         )
-        lx += 14 + len(label) * 7.2 + 28
-    updated = dt.datetime.now(dt.timezone.utc).strftime("updated %d %b %Y")
-    text = "".join(l for l, _ in numbers) + "".join(f"{n} {s * 100:.0f}%" for n, _, s in langs) + "last 12 months" + updated + "0123456789"
+        lx += 14 + len(label) * 7.2 + 22
+    updated = dt.datetime.now(dt.timezone.utc).strftime("last 12 months  ·  updated %d %b %Y")
+    text = "".join(l for l, _ in numbers) + "".join(f"{n} {s * 100:.0f}%" for n, _, s in langs) + updated + "0123456789"
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="GitHub activity for the last 12 months">
 <title>GitHub activity</title>
 <style>
@@ -228,17 +231,16 @@ def stats_card(user: dict) -> str:
 </style>
 <defs>
 <filter id="glow" filterUnits="userSpaceOnUse" x="{x0 - 20}" y="{top - 20}" width="{W - x0}" height="{7 * step + 40}">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="b"/>
   <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
 </filter>
 </defs>
 {frame(W, H)}
-<text class="m" x="40" y="44">last 12 months</text>
-<text class="m" x="{W - 40}" y="240" text-anchor="end">{updated}</text>
+<text class="m" x="40" y="44" style="white-space:pre">{updated}</text>
 {metrics}
 {cells}
-<clipPath id="bar"><rect x="40" y="204" width="{W - 80}" height="6" rx="3"/></clipPath>
-<g clip-path="url(#bar)"><rect x="40" y="204" width="{W - 80}" height="6" fill="#141829"/>{''.join(bar)}</g>
+<clipPath id="bar"><rect x="40" y="214" width="{bar_w}" height="6" rx="3"/></clipPath>
+<g clip-path="url(#bar)"><rect x="40" y="214" width="{bar_w}" height="6" fill="#141829"/>{''.join(bar)}</g>
 {''.join(legend)}
 </svg>
 """
