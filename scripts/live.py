@@ -159,7 +159,7 @@ def languages(user: dict, top: int = 5) -> list[tuple[str, str, float]]:
 
 
 def stats_card(user: dict) -> str:
-    W, H = 1200, 228
+    W, H = 1200, 264
     y = user["year"]
     days = calendar_days(user)
     cur, longest = streaks(days)
@@ -171,14 +171,14 @@ def stats_card(user: dict) -> str:
         ("best streak", longest),
     ]
     metrics = "".join(
-        f'<text class="v" x="{40 + i * 150}" y="106">{val}</text>'
-        f'<text class="m" x="{40 + i * 150}" y="132">{label}</text>'
+        f'<text class="v" x="{40 + i * 130}" y="118">{val}</text>'
+        f'<text class="m" x="{40 + i * 130}" y="144">{label}</text>'
         for i, (label, val) in enumerate(numbers)
     )
 
-    # Last 26 weeks as a small one-color heatmap on the right.
+    # Last 26 weeks as a one-color heatmap on the right, the card's main visual.
     weeks = y["contributionCalendar"]["weeks"][-26:]
-    cell, step = 9, 12
+    cell, step, top = 14, 17, 62
     x0 = W - 40 - len(weeks) * step + (step - cell)
     shades = ["#141829", "#1B6496", "#2385C2", "#2FA3DF", CYAN]
     dark, lit = [], []
@@ -186,8 +186,8 @@ def stats_card(user: dict) -> str:
         for d in w["contributionDays"]:
             level = LEVEL[d["contributionLevel"]]
             rect = (
-                f'<rect x="{x0 + wi * step}" y="{58 + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
-                f'width="{cell}" height="{cell}" rx="2" fill="{shades[level]}"'
+                f'<rect x="{x0 + wi * step}" y="{top + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
+                f'width="{cell}" height="{cell}" rx="3" fill="{shades[level]}"'
             )
             if not level:
                 dark.append(rect + "/>")
@@ -205,12 +205,12 @@ def stats_card(user: dict) -> str:
     bar, legend, x, lx = [], [], 40.0, 40.0
     for name, color, share in langs:
         w = (W - 80) * share
-        bar.append(f'<rect x="{x:.1f}" y="166" width="{max(w - 2, 1):.1f}" height="6" fill="{color}"/>')
+        bar.append(f'<rect x="{x:.1f}" y="204" width="{max(w - 2, 1):.1f}" height="6" fill="{color}"/>')
         x += w
         label = f"{name} {share * 100:.0f}%"
         legend.append(
-            f'<circle cx="{lx + 4:.1f}" cy="{197.5}" r="4" fill="{color}"/>'
-            f'<text class="m" x="{lx + 14:.1f}" y="202" style="fill:{MUTED}">{esc(label)}</text>'
+            f'<circle cx="{lx + 4:.1f}" cy="235.5" r="4" fill="{color}"/>'
+            f'<text class="m" x="{lx + 14:.1f}" y="240" style="fill:{MUTED}">{esc(label)}</text>'
         )
         lx += 14 + len(label) * 7.2 + 28
     updated = dt.datetime.now(dt.timezone.utc).strftime("updated %d %b %Y")
@@ -227,8 +227,8 @@ def stats_card(user: dict) -> str:
 {REDUCED_MOTION}
 </style>
 <defs>
-<filter id="glow" x="-20%" y="-30%" width="140%" height="160%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/>
+<filter id="glow" filterUnits="userSpaceOnUse" x="{x0 - 20}" y="{top - 20}" width="{W - x0}" height="{7 * step + 40}">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="b"/>
   <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
 </filter>
 </defs>
@@ -237,8 +237,8 @@ def stats_card(user: dict) -> str:
 <text class="m" x="{W - 40}" y="44" text-anchor="end">{updated}</text>
 {metrics}
 {cells}
-<clipPath id="bar"><rect x="40" y="166" width="{W - 80}" height="6" rx="3"/></clipPath>
-<g clip-path="url(#bar)"><rect x="40" y="166" width="{W - 80}" height="6" fill="#141829"/>{''.join(bar)}</g>
+<clipPath id="bar"><rect x="40" y="204" width="{W - 80}" height="6" rx="3"/></clipPath>
+<g clip-path="url(#bar)"><rect x="40" y="204" width="{W - 80}" height="6" fill="#141829"/>{''.join(bar)}</g>
 {''.join(legend)}
 </svg>
 """
