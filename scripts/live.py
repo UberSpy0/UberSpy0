@@ -181,11 +181,25 @@ def stats_card(user: dict) -> str:
     cell, step = 9, 12
     x0 = W - 40 - len(weeks) * step + (step - cell)
     shades = ["#141829", "#1A3550", "#22608A", "#2F93C9", CYAN]
-    cells = "".join(
-        f'<rect x="{x0 + wi * step}" y="{58 + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
-        f'width="{cell}" height="{cell}" rx="2" fill="{shades[LEVEL[d["contributionLevel"]]]}"/>'
-        for wi, w in enumerate(weeks) for d in w["contributionDays"]
-    )
+    dark, lit = [], []
+    for wi, w in enumerate(weeks):
+        for d in w["contributionDays"]:
+            level = LEVEL[d["contributionLevel"]]
+            rect = (
+                f'<rect x="{x0 + wi * step}" y="{58 + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
+                f'width="{cell}" height="{cell}" rx="2" fill="{shades[level]}"'
+            )
+            if not level:
+                dark.append(rect + "/>")
+                continue
+            # Days with activity are neon tubes: each flickers on its own clock.
+            # Seeded by date, so a rebuild doesn't reshuffle unchanged days.
+            rnd = random.Random(d["date"])
+            lit.append(
+                rect + f' class="neon" style="animation-duration:{rnd.uniform(3.5, 8):.2f}s;'
+                f'animation-delay:-{rnd.uniform(0, 8):.2f}s"/>'
+            )
+    cells = "".join(dark) + f'<g filter="url(#glow)">{"".join(lit)}</g>'
 
     langs = languages(user)
     bar, legend, x, lx = [], [], 40.0, 40.0
@@ -208,7 +222,16 @@ def stats_card(user: dict) -> str:
 {font_face(MONO, 500, text)}
 .v{{font:700 38px '{DISPLAY}',sans-serif;fill:{INK};letter-spacing:-.5px}}
 .m{{font:500 12.5px '{MONO}',monospace;fill:{DIM}}}
+.neon{{animation:neon linear infinite}}
+@keyframes neon{{0%,40%,44%,47%,72%,75%,100%{{opacity:1}}41%{{opacity:.15}}42%{{opacity:.9}}43%{{opacity:.3}}46%{{opacity:.45}}73.5%{{opacity:.55}}}}
+{REDUCED_MOTION}
 </style>
+<defs>
+<filter id="glow" x="-20%" y="-30%" width="140%" height="160%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+</defs>
 {frame(W, H)}
 <text class="m" x="40" y="44">last 12 months</text>
 <text class="m" x="{W - 40}" y="44" text-anchor="end">{updated}</text>
