@@ -180,7 +180,7 @@ def stats_card(user: dict) -> str:
     weeks = y["contributionCalendar"]["weeks"][-26:]
     cell, step = 9, 12
     x0 = W - 40 - len(weeks) * step + (step - cell)
-    shades = ["#141829", "#1A3550", "#22608A", "#2F93C9", CYAN]
+    shades = ["#141829", "#1B6496", "#2385C2", "#2FA3DF", CYAN]
     dark, lit = [], []
     for wi, w in enumerate(weeks):
         for d in w["contributionDays"]:
