@@ -12,18 +12,21 @@ W, H = 1200, 400
 CW = 0.6  # JetBrains Mono advance width, in em
 
 
-def role_spans(role: str, accent: dict[str, str], glow: bool = False) -> str:
-    """Role text with its keyword in the accent color; glow=True keeps only the keyword."""
+def role_colors(role: str, accent: dict[str, str]) -> list[str | None]:
+    """Per-character fill: the role's keyword in its accent color, the rest default."""
     for word, color in accent.items():
         if role.startswith(word):
-            rest = esc(role[len(word):])
-            rest_fill = ' fill-opacity="0"' if glow else ""
-            return f'<tspan fill="{color}">{esc(word)}</tspan><tspan{rest_fill}>{rest}</tspan>'
-    return "" if glow else esc(role)
+            return [color] * len(word) + [None] * (len(role) - len(word))
+    return [None] * len(role)
 
 
 def typing_roles(roles: list[str], accent: dict[str, str], y: int, size: int, period: float) -> tuple[str, str]:
-    """Roles typed one after another, centered; returns (css, svg)."""
+    """Roles typed and backspaced one after another, centered; returns (css, svg).
+
+    Every character is its own <text> with an opacity window. Safari doesn't
+    repaint CSS animations inside a <clipPath>, so a clip-based reveal left all
+    roles visible on top of each other there.
+    """
     cw = CW * size
     share = 100 / len(roles)
     css, svg = [], []
@@ -33,10 +36,22 @@ def typing_roles(roles: list[str], accent: dict[str, str], y: int, size: int, pe
         x0 = W / 2 - (full + cw * 2.2) / 2 + cw * 2.2
         a = i * share
         typed, hold, gone = a + share * 0.25, a + share * 0.8, a + share * 0.93
+        chars = []
+        for j, (ch, color) in enumerate(zip(role, role_colors(role, accent))):
+            if ch == " ":
+                continue
+            on = a + (typed - a) * j / n
+            off = hold + (gone - hold) * (n - j - 1) / n
+            css.append(
+                f"@keyframes r{i}_{j}{{0%,{on:.2f}%{{opacity:0}}{on + 0.01:.2f}%,{off:.2f}%{{opacity:1}}"
+                f"{off + 0.01:.2f}%,100%{{opacity:0}}}}"
+            )
+            fill = f"fill:{color};" if color else ""
+            chars.append(
+                f'<text class="role" x="{x0 + j * cw:.1f}" y="{y}" '
+                f'style="{fill}animation:r{i}_{j} {period}s step-end infinite">{esc(ch)}</text>'
+            )
         css.append(
-            f"@keyframes t{i}{{0%,{a:.2f}%{{transform:scaleX(0);animation-timing-function:steps({n},end)}}"
-            f"{typed:.2f}%,{hold:.2f}%{{transform:scaleX(1);animation-timing-function:steps({n},end)}}"
-            f"{gone:.2f}%,100%{{transform:scaleX(0)}}}}"
             f"@keyframes c{i}{{0%,{a:.2f}%{{transform:translateX({x0:.1f}px);opacity:0;animation-timing-function:steps(1,end)}}"
             f"{a + 0.01:.2f}%{{transform:translateX({x0:.1f}px);opacity:1;animation-timing-function:steps({n},end)}}"
             f"{typed:.2f}%,{hold:.2f}%{{transform:translateX({x0 + full:.1f}px);opacity:1;animation-timing-function:steps({n},end)}}"
@@ -45,16 +60,9 @@ def typing_roles(roles: list[str], accent: dict[str, str], y: int, size: int, pe
             f"@keyframes p{i}{{0%,{a:.2f}%{{opacity:0}}{a + 0.01:.2f}%,{gone:.2f}%{{opacity:1}}{min(gone + 0.01, 100):.2f}%,100%{{opacity:0}}}}"
         )
         svg.append(
-            f'<clipPath id="clip{i}"><rect x="{x0:.1f}" y="{y - size}" width="{full + 2:.1f}" height="{size * 1.5}" '
-            f'style="transform-origin:{x0:.1f}px 0;animation:t{i} {period}s infinite"/></clipPath>'
             f'<text class="prompt" x="{x0 - cw * 2.2:.1f}" y="{y}" style="animation:p{i} {period}s infinite">&gt;</text>'
-            + (
-                f'<text class="role glowword" x="{x0:.1f}" y="{y}" clip-path="url(#clip{i})">'
-                f"{role_spans(role, accent, glow=True)}</text>"
-                if role_spans(role, accent, glow=True) else ""
-            )
-            + f'<text class="role" x="{x0:.1f}" y="{y}" clip-path="url(#clip{i})">{role_spans(role, accent)}</text>'
-            f'<g style="animation:c{i} {period}s infinite"><rect class="caret" x="2" y="{y - size * 0.78:.1f}" '
+            + "".join(chars)
+            + f'<g style="animation:c{i} {period}s infinite"><rect class="caret" x="2" y="{y - size * 0.78:.1f}" '
             f'width="{size * 0.55:.1f}" height="{size * 0.95:.1f}" rx="1.5"/></g>'
         )
     return "".join(css), "".join(svg)
@@ -127,8 +135,7 @@ def hero() -> None:
 @keyframes rise{{from{{opacity:0;transform:translateY(8px)}}to{{opacity:1;transform:none}}}}
 .mono{{font:500 15px '{MONO}',monospace;fill:{MUTED};letter-spacing:.4px}}
 .prompt{{font:500 26px '{MONO}',monospace;fill:{CYAN};opacity:0}}
-.role{{font:500 26px '{MONO}',monospace;fill:url(#roleInk)}}
-.glowword{{filter:url(#soft);opacity:.85}}
+.role{{font:500 26px '{MONO}',monospace;fill:{INK};opacity:0}}
 .caret{{fill:{PINK};animation:blink 1s steps(1) infinite}}
 @keyframes blink{{50%{{opacity:0}}}}
 .dot{{fill:{GREEN};animation:pulse 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}}
@@ -149,7 +156,6 @@ def hero() -> None:
   <animateTransform attributeName="gradientTransform" type="translate" values="0 0;1800 0;1800 0" keyTimes="0;.35;1" dur="7s" begin="3.2s" repeatCount="indefinite"/>
 </linearGradient>
 <linearGradient id="line" x1="0" x2="1"><stop offset="0" stop-color="{CYAN}"/><stop offset="1" stop-color="{PINK}"/></linearGradient>
-<linearGradient id="roleInk" x1="0" x2="1"><stop offset="0" stop-color="{INK}"/><stop offset="1" stop-color="#C9D3FF"/></linearGradient>
 <linearGradient id="edge" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0">
   <stop offset="0" stop-color="{CYAN}" stop-opacity=".7"/><stop offset=".35" stop-color="{CYAN}" stop-opacity="0"/>
   <stop offset=".65" stop-color="{PINK}" stop-opacity="0"/><stop offset="1" stop-color="{PINK}" stop-opacity=".7"/>
@@ -157,7 +163,6 @@ def hero() -> None:
 </linearGradient>
 <radialGradient id="vign" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="{BG}" stop-opacity="0"/><stop offset="1" stop-color="{BG}" stop-opacity=".85"/></radialGradient>
 <filter id="blur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
-<filter id="soft" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="6"/></filter>
 <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .05 0"/></filter>
 <clipPath id="frame"><rect width="{W}" height="{H}" rx="26"/></clipPath>
 </defs>
