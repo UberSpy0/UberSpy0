@@ -1,24 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 72" width="1200" height="72" role="img" aria-label="Projects">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 56" width="1200" height="56" role="img" aria-label="Projects">
 <title>Projects</title>
 <style>
 @font-face{font-family:'Space Grotesk';font-weight:700;src:url(data:font/woff2;base64,d09GMgABAAAAAAW0AA8AAAAACqwAAAVcAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGjYbgWQcVgZgP1NUQVQqAGQRCAqIHIZiCxwAATYCJAM0BCAFhDoHIBvPCBHVpB7INFIWzt/PQl05K+vgJd8F6QmqEJRA6AsQWa1cBpEMIS4By5cP6Nm/1gcozUHBQZXTnozxQ9g0AZ7EGUD//3tVk308FBzTQh4K2cv9f9+sfTNm16S1qBuoIKWxbQ/ACpdqpZ6CSkG1b+BEXEQ8ymXLfUAAsrW2LQ6Czcsyh2F0CgyWNJqDEEfWWwbISrxGIB+NwNq279oX6cnO7KlISxUAXDJi0piZU5FMOd/GwZAsrIIAHEibMBcZxBGHE9j8RMb8/xb5Hof/5hvM0nuBAr0ihqy2yEJiHMifKQYrVpJyBP1RLAm+oN0PBliZCiPchCyzVAqePGGcw4ABkh+pHCOfrUhWvT2ctWYX2rcyzQaGu+A2NByNKG/kmq0DpieyF90n2ncB/y3IxmzrRfmbcXwp5WeDlktN+sYurCGMj2+Rgb6qpm5j3rjxszNhzQjEiXAP4wdSxCIXOHoiVUTFd9+VjZ4YhTGYiGmYbYypmfmA+WiOmS1ms1lvVpuVNc91RhPIGFRIMYXdtQFUVvr7A7Rtz4GPmFNu7VLGxKL7B7KKFe38tMirnaicrlBWxZZVqjg6pJiKZMoLwF1fZFLec7LUM2HrJ2Du0wH6EqnL0rsI90J/UoeLauzeT+qS0BcAQSqKpBdcBdwjZ/KrrlgDyFjKCwLA9X0hmCW950TqmRCODkMiFUXSC4KcvusO3RP6gQ+4wUPpPW/Qb4vvOzoMP/8qwN4aSO9xnX5rnviD5aZnQj+RznV9v78XEalQ6FrOkpaEXH9fSoiO+zk67D9g48W7Z50nda5Z4a3wGalyNzXsu+me0Gfgnm1acDN4Cj/rp/QzsgRJkpAQzJUSIwb9VX1JehST3H0iSMvIx2uz1aDxYzKFmfFjBnVNL2k6Irv1tDblbaZ9KJcGri0N1YV6/3LbTn/izN/Dz/4EheySkZ8JzypfitLmyRjGRpxJEMTeeTF5eO+Chwd0pyN1LWlZ9Tp3bU5DS5pmGyZW0muTnZPX0itBuVlG5PrBQvdC/eCI3GJuZVVlGyaDlOcSY2LOExramSY052Oy981Phl5WlbWyiHXjBlSqoTzXPOVQv4qzdmvkQ/bETm+zOi097FZb+mN7ecJp1cucS2zqIbBu3KhcP1jgWaAfHJVz3M1F1v4cG2dyNnGcPPnUNg6mjzNZ3gcTCcWAirmTHgwft8bpYtfc4bAmCcKSdgQETBw7nF1KKFmuO6+iuNfqMiIb9SDJCv/AMb/Dk1WR9rS8gRII2dupgTMdM1vmtizqWMQPD23owEQ88YYk3xCypyT5FH7XenSh4dScJfV0CoTs7dRfLV0dXUefZG+nBtZ11G0p3RTHwIWjw85X0DmO144sPOLfPPXz3Gn4Z2aZzjfUeyi+SQWClweq9XQbsTk+Z3mz4+D/Z8IHwj4ej/IZkGeSE4vgOPiPET44vx/lJliBevwH+DXQ8TlQfC0onqvjNb8FFG8ZTHxXJPCun2k17l1T4I5gPJkbaiBFE0T1oaDdojPmGEcV8nT5Mn7mLh6C8QIg8gBcAqRhD4MYWc4lQjBaXGIQ0DndkQHXMI9beERhfeeVoxWdaEcHRvyxIxjAMHJAS6cNoxlD6MQARlChTAbFHlBcdy/aQSMfJthRjAE0smDBjCH5vSNoxTC6kQwd+tGDFpShFUMlz+tHHyKRAgqMO8tYKlI2R84i7q8cJtggb03ERdat6CUawOTY+JFDn5DxeyNRgg76ovuGBffaLmwuSVqMzh/MjDKMS8fNJbWj8+vwUTSBQjOO7gWNNvTQGWgbqRuNZaEN7Jt/sXUlGecAxv+TQupWjm1IgQM=) format('woff2');}
-.t{font:700 32px 'Space Grotesk',sans-serif;fill:#E6EAF5;letter-spacing:-.5px}
-.ic{fill:none;stroke:url(#ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s ease-out .2s forwards}
-@keyframes draw{to{stroke-dashoffset:0}}
-.line{animation:grow 1.4s cubic-bezier(.2,.8,.2,1) .4s both;transform-origin:242.0px 0}
-@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.spark{animation:run 5s cubic-bezier(.5,0,.5,1) 1.8s infinite;opacity:0}
-@keyframes run{0%{transform:translateX(0);opacity:0}10%{opacity:1}80%{opacity:1}100%{transform:translateX(938.0px);opacity:0}}
-@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+@font-face{font-family:'JetBrains Mono';font-weight:500;src:url(data:font/woff2;base64,d09GMgABAAAAAAUYAA4AAAAACSwAAATCAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGx4cKAZgP1NUQVRMADwRCAqHSIYoCxoAATYCJAMaBCAFhGoHIBt7B8jEp383+3OTUAtrzu6kplBY8FqqhojV7W/3uSjyxL9EJH/cq5p5HrAxRaP2x35ZY9Be57mAhqJjtvt8YUEKUgHvIrsnYJF1IAAKIKFvkLaOPiPywIC0CoJFFrBlBFBY7e6kb3Yc2+m+KrcZyk5+hQigTqGsmL7X0SJuyElzjALy8du4CpSwE39+AyAPfR89PICnwEFL//t/CqD/JTUcyJWfZgGqjPoANXIQgYAgrw0b9lq8kuhCJDo7tDdis74k2QGCvWBAEyGK7Bw3UK5HRH5lfc8A4yIygIbBqmKOhEEFP8dLQI0En1MzB5kgCN8Ib1cg4HJEELDDA3EicxDAbrYgBcj1FYCxgAamNKAYBPtrYGh693Yxe4QTF+8X5x+R7Bezom2Mf5somBD7TslkCL2VzbKnptOgNlMp86lZQm9lCk5JgdpMW055gmw9yZ76ODYfYwkrMhILy7BgieXdLNl6p+CUFAqy2Sx7ajqNzZTRuA1g1ezm2+yp75LCKwXEIibbYCSnIpT6UGobEZMIGwRLWMp3SsbMXv56Oekprx0scGTFRrZiazBYVbytlq2swsFa9906QpIkyKc202yiAAVkG5zlYhbLo88C1byFzae1ptIEadOZcykAn9H4UNOdjv03pQpOSV+XWR3gv2L/4LoPXPU1+iahWleD6vz2oFLtbWnkVZ6Qsr0jqFR5+MYWtTeobHNq+FZ1o5pv1bj/efWHkuKjkiKJpEhytBgW7zOSZ86au2HpxPLlXpgSn3+plJmrNW8qdTyvS5JWrT+i7GgNKJSu5hZ+pbf3uhua/CjKbw8pVO6mpPo7jfZTpUrzkXYgfPPVnOeM8EuPHY4uTXnVTWp3WIGzLuq85siVi9UPl396a+I6VOZ75rw5w4nOSxXa29Sdmsu0JbLHEsw5Z/jLyReSl6XdykabPxno9M1NoSa/K6HXJztVXPLzu48tvjvIG/hjlXqLWhps79DHYroup6Gzv7m5s99g6Oxvbu7sxy2ieSGReCMd/XcK1fkdIanaquc7XT1FUdn0E2W158rl19WWPjEclQ6UdLhb7MuxqEvTopOVV/P+hLy7qNPWpD4+6qnjeU+dYlTd3GHpKUnKh6tayupb9Lj73UG+94ZQW6c+Gtd1jk6W6FJyY5uouGEomGoXPrt/76iY+077e69nh+G3PJr+ko59+M4NlzgPffDWz3/p/08x59D/ikbq1hIvQRdz11/6/9aYc3BKvUUoK+zogRkt1FPdGEADOtCFhju/n5g8hHHch5xGQIN7xbjgXnLMexR4jBwMVARV+F5FYTs+U9HQ4YZZplglwmGcpspBBYLK7VChjiP9GIpwvki8n79DXMDupN8CRjCBMfgwjm7M0reSiCGAfoQQxDJzGIOFQbBcBFHMGvWzmMQMdJDSt2YQwDRimMQswdZJCPZzSdRhAtOIQIpBdKAPPQhhFjym4UMM45hBPyYwjs3X9sI3w3RzrCDDQY46gq2ne7ycHj3grQnA8UfYCL4tCR+mG5g4RperbcUEJrE0M2Le2FhAZpyGgxFRhMBBeYYwjbNxGgJNfS2YWz9sZbBKiyvW0hdBrLB2Dn7UIbAvy6Q9rCqdO1T+LyiXEEKQn8l+FQA=) format('woff2');}
+.t{font:700 22px 'Space Grotesk',sans-serif;fill:#E6EAF5;letter-spacing:-.2px}
+.n{font:500 13px 'JetBrains Mono',monospace;fill:#4A5072}
 </style>
-<defs>
-<linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
-<linearGradient id="rule" x1="0" x2="1"><stop offset="0" stop-color="#A78BFA" stop-opacity=".7"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></linearGradient>
-<radialGradient id="sp"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#F472B6"/><stop offset="1" stop-color="#F472B6" stop-opacity="0"/></radialGradient>
-</defs>
-<rect x="8" y="14" width="46" height="46" rx="13" fill="#fff" fill-opacity=".04" stroke="#fff" stroke-opacity=".1"/>
-<g transform="translate(17 23) scale(1.17)"><path class="ic" pathLength="1" d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z M3 12l9 4.5 9-4.5 M3 16.5 12 21l9-4.5"/></g>
-<text class="t" x="76" y="49">Projects</text>
-<rect class="line" x="242.0" y="37" width="938.0" height="1.5" fill="url(#rule)"/>
-<circle class="spark" cx="242.0" cy="37.7" r="6" fill="url(#sp)"/>
+<text class="n" x="2" y="34">02</text>
+<text class="t" x="40" y="35">Projects</text>
+<rect x="166" y="28" width="1034" height="1" fill="#1C2036"/>
 </svg>

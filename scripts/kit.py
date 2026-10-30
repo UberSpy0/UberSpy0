@@ -7,7 +7,6 @@ glyphs the image actually uses and embedded as base64.
 
 import base64
 import hashlib
-import random
 import re
 import urllib.parse
 import urllib.request
@@ -29,6 +28,10 @@ PINK = "#F472B6"
 VIOLET = "#A78BFA"
 GREEN = "#4ADE80"
 AMBER = "#FBBF24"
+RUST = "#FF5F57"
+FRONT = "#C084FC"
+ORANGE = "#FB923C"
+LINE = "#1C2036"  # hairline borders and dividers
 
 DISPLAY = "Space Grotesk"
 MONO = "JetBrains Mono"
@@ -66,20 +69,24 @@ def esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def stars(w: int, h: int, n: int, seed: int, cls: str = "star") -> str:
-    """Twinkling dots with fixed positions so rebuilds don't churn the diff."""
-    rnd = random.Random(seed)
-    out = []
-    for _ in range(n):
-        x, y = rnd.uniform(0, w), rnd.uniform(0, h)
-        r = rnd.choice([0.6, 0.8, 1.0, 1.0, 1.3, 1.7])
-        dur = rnd.uniform(2.5, 6.5)
-        delay = rnd.uniform(0, 6)
-        out.append(
-            f'<circle class="{cls}" cx="{x:.1f}" cy="{y:.1f}" r="{r}" '
-            f'style="animation-duration:{dur:.2f}s;animation-delay:-{delay:.2f}s"/>'
-        )
-    return "\n".join(out)
+def wrap(text: str, size: float, width: float, em: float = 0.53) -> list[str]:
+    """Greedy word wrap by an average glyph width of `em`."""
+    limit = int(width / (size * em))
+    lines, cur = [], ""
+    for word in text.split():
+        if len(cur) + len(word) + 1 > limit and cur:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}".strip()
+    lines.append(cur)
+    return lines
+
+
+def frame(w: float, h: float, rx: float = 14, dashed: bool = False) -> str:
+    """The flat card every block sits on: background plus a hairline border."""
+    dash = ' stroke-dasharray="5 5"' if dashed else ""
+    return f'<rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{rx}" fill="{BG}" stroke="{LINE}"{dash}/>'
 
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
