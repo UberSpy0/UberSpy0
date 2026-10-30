@@ -171,14 +171,14 @@ def stats_card(user: dict) -> str:
         ("best streak", longest),
     ]
     metrics = "".join(
-        f'<text class="v" x="{40 + i * 130}" y="118">{val}</text>'
-        f'<text class="m" x="{40 + i * 130}" y="144">{label}</text>'
+        f'<text class="v" x="{40 + i * 114}" y="112">{val}</text>'
+        f'<text class="m" x="{40 + i * 114}" y="138">{label}</text>'
         for i, (label, val) in enumerate(numbers)
     )
 
     # Last 26 weeks as a one-color heatmap on the right, the card's main visual.
     weeks = y["contributionCalendar"]["weeks"][-26:]
-    cell, step, top = 14, 17, 62
+    cell, step, top = 18, 21, 32
     x0 = W - 40 - len(weeks) * step + (step - cell)
     shades = ["#141829", "#1B6496", "#2385C2", "#2FA3DF", CYAN]
     dark, lit = [], []
@@ -187,7 +187,7 @@ def stats_card(user: dict) -> str:
             level = LEVEL[d["contributionLevel"]]
             rect = (
                 f'<rect x="{x0 + wi * step}" y="{top + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
-                f'width="{cell}" height="{cell}" rx="3" fill="{shades[level]}"'
+                f'width="{cell}" height="{cell}" rx="4" fill="{shades[level]}"'
             )
             if not level:
                 dark.append(rect + "/>")
@@ -228,13 +228,13 @@ def stats_card(user: dict) -> str:
 </style>
 <defs>
 <filter id="glow" filterUnits="userSpaceOnUse" x="{x0 - 20}" y="{top - 20}" width="{W - x0}" height="{7 * step + 40}">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="b"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
   <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
 </filter>
 </defs>
 {frame(W, H)}
 <text class="m" x="40" y="44">last 12 months</text>
-<text class="m" x="{W - 40}" y="44" text-anchor="end">{updated}</text>
+<text class="m" x="{W - 40}" y="240" text-anchor="end">{updated}</text>
 {metrics}
 {cells}
 <clipPath id="bar"><rect x="40" y="204" width="{W - 80}" height="6" rx="3"/></clipPath>
