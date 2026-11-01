@@ -1,0 +1,108 @@
+{
+  "login": "UberSpy0",
+  "name": "Artem Krupa",
+  "nick": "TomaToma0",
+  "path": "~/uberspy0",
+  "place": "NUST MISIS  ·  Moscow  ·  from Krasnodar",
+  "roles": [
+    {"text": "ML Engineer", "keyword": "ML", "color": "green"},
+    {"text": "Rust Developer", "keyword": "Rust", "color": "rust"},
+    {"text": "Frontend Designer", "keyword": "Frontend", "color": "front"},
+    {"text": "Cybersecurity", "keyword": "Cybersecurity", "color": "blue"},
+    {"text": "Competitive Programmer", "keyword": "Competitive", "color": "orange"}
+  ],
+  "colors": {
+    "bg": "#0A0C16",
+    "ink": "#E6EAF5",
+    "muted": "#8A90AD",
+    "dim": "#4A5072",
+    "line": "#1C2036",
+    "empty": "#141829",
+    "cyan": "#38BDF8",
+    "violet": "#A78BFA",
+    "pink": "#F472B6",
+    "green": "#4ADE80",
+    "amber": "#FBBF24",
+    "blue": "#4D8DFF",
+    "rust": "#FF5F57",
+    "front": "#C084FC",
+    "orange": "#FB923C",
+    "telegram": "#26A5E4"
+  },
+  "sections": [
+    {"id": "about", "title": "About", "show": true},
+    {"id": "projects", "title": "Projects", "show": true},
+    {"id": "achievements", "title": "Achievements", "show": true},
+    {"id": "stack", "title": "Stack", "show": true},
+    {"id": "activity", "title": "Activity", "show": true},
+    {"id": "contact", "title": "Contact", "show": true}
+  ],
+  "effects": {
+    "hero_line": true,
+    "neon": true,
+    "glow": true,
+    "live_dot": true
+  },
+  "decorations": {
+    "hero_path": true,
+    "section_numbers": true,
+    "section_rule": true,
+    "status_dots": true,
+    "card_arrows": true
+  },
+  "windows": {
+    "radius": 14,
+    "border": "solid"
+  },
+  "formats": {
+    "projects": "grid",
+    "projects_count": 4,
+    "achievements_columns": 3,
+    "heatmap_weeks": 22,
+    "show_now_building": true
+  },
+  "about": [
+    "🎓 First-year student at **NUST MISIS**. I live in Moscow and come from Krasnodar",
+    "🧠 Going deep into **machine learning**, with **Rust** as my systems language",
+    "🏆 **2nd place** at ShortHack × SberTech · **ICPC** 1/8 stage · prize places at **RoboFinist** 2023 and 2024",
+    "🎨 I design and build interfaces and look at products through a marketing-analytics lens"
+  ],
+  "projects": {
+    "exclude": ["Python_Labs", "UberSpy0", "ML-Practice-Repo"],
+    "include_contributed": true,
+    "notes": {
+      "nighttcrawlerr/ShortHack": {
+        "title": "SaluteAgent",
+        "event": "ShortHack × SberTech · Sep 2026",
+        "badge": "2nd place",
+        "badge_color": "amber",
+        "body": "AI support assistant: drafts an answer from the knowledge base, then fact-checks every claim against its sources.",
+        "role": "Frontend, UI design and a ticket classifier fine-tuned on YandexGPT-5-Pro. Team of 4.",
+        "chips": ["YandexGPT-5-Pro", "React", "FastAPI", "Claude Code"]
+      },
+      "UberSpy0/VST-plugin-based-on-Rust": {
+        "title": "Rust VST Plugin",
+        "event": "Audio DSP · Ableton Live & FL Studio",
+        "badge": "In progress",
+        "badge_color": "violet",
+        "body": "A music plugin for Ableton Live and FL Studio: real-time sound processing on the audio thread, packaged as VST3 and CLAP.",
+        "chips": ["Rust", "DSP", "VST3", "CLAP"]
+      }
+    }
+  },
+  "achievements": [
+    {"meta": "2026 · Hackathon", "name": "ShortHack × SberTech", "result": "2nd place", "color": "amber",
+     "desc": "SaluteAgent, an AI support assistant. My part: frontend, design and the YandexGPT-5-Pro classifier."},
+    {"meta": "2026 · Hackathon", "name": "Ostrovok Hackathon", "result": "Shipped", "color": "green",
+     "desc": "Hotel facts search for the Sochi coast and Krasnaya Polyana. My part: noise and geo models."},
+    {"meta": "2026 · Olympiad", "name": "ICPC", "result": "1/8 stage", "color": "cyan",
+     "desc": "International Collegiate Programming Contest: algorithmic problems against the clock."},
+    {"meta": "2024 · Robotics", "name": "RoboFinist", "result": "3rd place", "color": "amber",
+     "desc": "Habitat: Exploring the Red Planet. Robot assembly and Arduino / C++ modules."},
+    {"meta": "2023 · Robotics", "name": "RoboFinist", "result": "3rd place ×2", "color": "amber",
+     "desc": "Underwater robotics and MGBot × R:ED Habitat. Robot assembly and Arduino / C++ modules."}
+  ],
+  "achievements_next": {"name": "More on the way", "desc": "New hackathons and olympiads land here."},
+  "achievements_note": "RoboFinist is on Russia's official list of school olympiads.",
+  "contact": {"telegram": "fab_butt"}
+}

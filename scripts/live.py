@@ -1,29 +1,41 @@
-"""Live cards rebuilt by the GitHub Action: activity stats and now building.
+"""GitHub data and the live cards built from it: activity stats and now building.
 
-    GH_TOKEN=... GH_LOGIN=UberSpy0 python3 scripts/live.py
-    python3 scripts/live.py --demo      # synthetic data into .cache/demo, for previews
+build.py --fetch calls fetch() with a token and saves the result to
+data/github.json; every other build (the README Editor, local previews)
+renders from that saved file, so no token is needed to restyle the profile.
 
 With the default Actions token private repositories only show up as counts.
-A PROFILE_TOKEN secret (read-only PAT) lets "Now building" see private
-activity; private repository names are never printed.
+Private repository names never reach data/github.json or the cards.
 """
+
+from __future__ import annotations
 
 import datetime as dt
 import json
-import os
 import random
-import sys
 import urllib.request
-from pathlib import Path
 
 from kit import (
-    ASSETS, CYAN, DIM, DISPLAY, GREEN, INK, MONO, MUTED, REDUCED_MOTION, ROOT,
-    esc, font_face, frame,
+    CONFIG, CYAN, DIM, DISPLAY, EFFECTS, EMPTY, FORMATS, GREEN, INK, MONO,
+    MUTED, REDUCED_MOTION, ROOT, esc, font_face, frame,
 )
+
+DATA = ROOT / "data" / "github.json"
+
+REPO_FIELDS = """
+  name nameWithOwner url description stargazerCount pushedAt
+  primaryLanguage { name color }
+  repositoryTopics(first: 6) { nodes { topic { name } } }
+"""
 
 QUERY = """
 query($login: String!, $from: DateTime!, $to: DateTime!, $recent: DateTime!) {
   user(login: $login) {
+    pinnedItems(first: 6, types: REPOSITORY) { nodes { ... on Repository { nameWithOwner isPrivate } } }
+    repositories(first: 30, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC,
+                 orderBy: {field: PUSHED_AT, direction: DESC}) { nodes { %s } }
+    repositoriesContributedTo(first: 20, privacy: PUBLIC, includeUserRepositories: false,
+                              contributionTypes: [COMMIT, PULL_REQUEST]) { nodes { %s } }""" % (REPO_FIELDS, REPO_FIELDS) + """
     year: contributionsCollection(from: $from, to: $to) {
       totalCommitContributions
       totalPullRequestContributions
@@ -55,9 +67,9 @@ query($login: String!, $from: DateTime!, $to: DateTime!, $recent: DateTime!) {
 }
 """
 
-# Coursework and this profile repo never count as "now building".
-HIDDEN = {"Python_Labs", "UberSpy0"}
-# Sandboxes: their activity counts, but the name shows as "private project".
+# Repositories hidden from Projects are also never "now building"; their
+# activity still counts. Sandboxes listed here show as "private project".
+HIDDEN = set(CONFIG["projects"].get("exclude", []))
 MASKED = {"ML-Practice-Repo"}
 
 LEVEL = {"NONE": 0, "FIRST_QUARTILE": 1, "SECOND_QUARTILE": 2, "THIRD_QUARTILE": 3, "FOURTH_QUARTILE": 4}
@@ -80,7 +92,33 @@ def fetch(login: str, token: str) -> dict:
         body = json.load(r)
     if "errors" in body:
         raise SystemExit(f"GraphQL error: {body['errors']}")
-    return body["data"]["user"]
+    return sanitize(body["data"]["user"])
+
+
+def sanitize(user: dict) -> dict:
+    """Flatten the repo lists and drop every private repository name."""
+    for item in user["recent"]["commitContributionsByRepository"]:
+        repo = item["repository"]
+        if repo["isPrivate"]:
+            item["repository"] = {
+                "name": "private", "nameWithOwner": "private", "isPrivate": True, "description": None,
+                "primaryLanguage": repo["primaryLanguage"], "defaultBranchRef": None,
+            }
+    user["pinned"] = [n["nameWithOwner"] for n in user.pop("pinnedItems")["nodes"] if n and not n["isPrivate"]]
+    user["repos"] = user.pop("repositories")["nodes"]
+    user["contributed"] = user.pop("repositoriesContributedTo")["nodes"]
+    user["fetched"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    return user
+
+
+def save(user: dict) -> None:
+    DATA.parent.mkdir(exist_ok=True)
+    DATA.write_text(json.dumps(user, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
+def load() -> dict:
+    """The last saved GitHub data, or synthetic data before the first fetch."""
+    return json.loads(DATA.read_text(encoding="utf-8")) if DATA.exists() else demo()
 
 
 def demo() -> dict:
@@ -97,7 +135,15 @@ def demo() -> dict:
             weeks.append({"contributionDays": days})
             days = []
     lang = lambda n, c, s: {"size": s, "node": {"name": n, "color": c}}
+    repo = lambda full, desc, stars: {
+        "name": full.split("/")[1], "nameWithOwner": full, "url": f"https://github.com/{full}",
+        "description": desc, "stargazerCount": stars, "pushedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "primaryLanguage": {"name": "Rust", "color": "#dea584"}, "repositoryTopics": {"nodes": []},
+    }
     return {
+        "pinned": [],
+        "repos": [repo("demo/sample-project", "A sample repository for previews.", 3)],
+        "contributed": [],
         "year": {
             "totalCommitContributions": 312,
             "totalPullRequestContributions": 18,
@@ -177,22 +223,26 @@ def stats_card(user: dict) -> str:
         for i, (label, val) in enumerate(numbers)
     )
 
-    # Last 22 weeks as a one-color heatmap on the right, the card's main visual.
-    weeks = y["contributionCalendar"]["weeks"][-22:]
-    cell, step = 22, 26
+    # The last weeks as a one-color heatmap on the right, the card's main visual.
+    # Cells grow to fill the right side: fewer weeks means bigger squares.
+    n_weeks = max(8, min(52, int(FORMATS.get("heatmap_weeks", 22))))
+    weeks = y["contributionCalendar"]["weeks"][-n_weeks:]
+    step = min(568 // len(weeks), 28)
+    cell = step - max(3, step // 6)
     top = (H - 7 * step + (step - cell)) // 2
     x0 = W - 40 - len(weeks) * step + (step - cell)
-    shades = ["#141829", "#1B6496", "#2385C2", "#2FA3DF", CYAN]
+    shades = [EMPTY, "#1B6496", "#2385C2", "#2FA3DF", CYAN]
+    neon = EFFECTS.get("neon", True)
     dark, lit = [], []
     for wi, w in enumerate(weeks):
         for d in w["contributionDays"]:
             level = LEVEL[d["contributionLevel"]]
             rect = (
                 f'<rect x="{x0 + wi * step}" y="{top + dt.date.fromisoformat(d["date"]).isoweekday() % 7 * step}" '
-                f'width="{cell}" height="{cell}" rx="5" fill="{shades[level]}"'
+                f'width="{cell}" height="{cell}" rx="{cell // 4}" fill="{shades[level]}"'
             )
-            if not level:
-                dark.append(rect + "/>")
+            if not level or not neon:
+                (lit if level else dark).append(rect + "/>")
                 continue
             # Days with activity are neon tubes: each flickers on its own clock.
             # Seeded by date, so a rebuild doesn't reshuffle unchanged days.
@@ -201,7 +251,8 @@ def stats_card(user: dict) -> str:
                 rect + f' class="neon" style="animation-duration:{rnd.uniform(3.5, 8):.2f}s;'
                 f'animation-delay:-{rnd.uniform(0, 8):.2f}s"/>'
             )
-    cells = "".join(dark) + f'<g filter="url(#glow)">{"".join(lit)}</g>'
+    glow = ' filter="url(#glow)"' if EFFECTS.get("glow", True) else ""
+    cells = "".join(dark) + f'<g{glow}>{"".join(lit)}</g>'
 
     langs = languages(user, top=4)
     bar_w = 500
@@ -240,7 +291,7 @@ def stats_card(user: dict) -> str:
 {metrics}
 {cells}
 <clipPath id="bar"><rect x="40" y="214" width="{bar_w}" height="6" rx="3"/></clipPath>
-<g clip-path="url(#bar)"><rect x="40" y="214" width="{bar_w}" height="6" fill="#141829"/>{''.join(bar)}</g>
+<g clip-path="url(#bar)"><rect x="40" y="214" width="{bar_w}" height="6" fill="{EMPTY}"/>{''.join(bar)}</g>
 {''.join(legend)}
 </svg>
 """
@@ -295,7 +346,7 @@ def now_card(user: dict) -> str:
 {REDUCED_MOTION}
 </style>
 {frame(W, H)}
-<circle class="live" cx="44" cy="40.5" r="4" fill="{GREEN}"/>
+<circle{' class="live"' if EFFECTS.get("live_dot", True) else ''} cx="44" cy="40.5" r="4" fill="{GREEN}"/>
 <text class="m" x="58" y="45">now building</text>
 <text class="m" x="{W - 40}" y="45" text-anchor="end">{esc(head)}</text>
 {lock}
@@ -308,17 +359,3 @@ def now_card(user: dict) -> str:
 """
 
 
-def main() -> None:
-    if "--demo" in sys.argv:
-        user, out = demo(), ROOT / ".cache" / "demo"
-    else:
-        token = os.environ["GH_TOKEN"]
-        user, out = fetch(os.environ.get("GH_LOGIN", "UberSpy0"), token), ASSETS
-    out.mkdir(parents=True, exist_ok=True)
-    for name, svg in [("github.svg", stats_card(user)), ("now.svg", now_card(user))]:
-        (out / name).write_text(svg, encoding="utf-8")
-        print(f"{out.name}/{name}: {len(svg) // 1024} KB")
-
-
-if __name__ == "__main__":
-    main()

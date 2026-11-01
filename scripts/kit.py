@@ -1,12 +1,18 @@
-"""Shared pieces for every SVG in the profile: palette, fonts, helpers.
+"""Shared pieces for every SVG in the profile: config, palette, fonts, helpers.
+
+Everything a person might want to restyle lives in profile.json at the repo
+root (the README Editor app edits that file); the scripts only read it.
 
 GitHub renders README images through <img>, so an SVG can't load external
 fonts or run scripts. Fonts are fetched from Google Fonts as a subset of the
 glyphs the image actually uses and embedded as base64.
 """
 
+from __future__ import annotations
+
 import base64
 import hashlib
+import json
 import re
 import urllib.parse
 import urllib.request
@@ -15,28 +21,40 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 CACHE = ROOT / ".cache" / "fonts"
+ICONS = Path(__file__).resolve().parent / "icons"
 
-# Taken from the avatar: sky-blue background and the pink-violet flag.
-BG = "#0A0C16"
-BG2 = "#11142A"
-INK = "#E6EAF5"
-MUTED = "#8A90AD"
-DIM = "#4A5072"
-CYAN = "#38BDF8"
-AQUA = "#22D3EE"
-PINK = "#F472B6"
-VIOLET = "#A78BFA"
-GREEN = "#4ADE80"
-AMBER = "#FBBF24"
-RUST = "#FF5F57"
-FRONT = "#C084FC"
-ORANGE = "#FB923C"
-LINE = "#1C2036"  # hairline borders and dividers
+CONFIG = json.loads((ROOT / "profile.json").read_text(encoding="utf-8"))
+COLORS = CONFIG["colors"]
+EFFECTS = CONFIG["effects"]
+DECOR = CONFIG["decorations"]
+WINDOWS = CONFIG["windows"]
+FORMATS = CONFIG["formats"]
+
+BG = COLORS["bg"]
+INK = COLORS["ink"]
+MUTED = COLORS["muted"]
+DIM = COLORS["dim"]
+LINE = COLORS["line"]  # hairline borders and dividers
+EMPTY = COLORS["empty"]  # empty heatmap cells and bar tracks
+CYAN = COLORS["cyan"]
+VIOLET = COLORS["violet"]
+PINK = COLORS["pink"]
+GREEN = COLORS["green"]
+AMBER = COLORS["amber"]
+BLUE = COLORS["blue"]
+RUST = COLORS["rust"]
+FRONT = COLORS["front"]
+ORANGE = COLORS["orange"]
 
 DISPLAY = "Space Grotesk"
 MONO = "JetBrains Mono"
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+
+
+def color(name: str) -> str:
+    """A palette key from profile.json ("amber") or a literal "#hex"."""
+    return COLORS.get(name, name)
 
 
 def _get(url: str) -> bytes:
@@ -65,6 +83,15 @@ def font_face(family: str, weight: int, text: str) -> str:
     )
 
 
+def icon_path(slug: str) -> str:
+    """Path data of a Simple Icons logo, kept in scripts/icons/."""
+    path = ICONS / f"{slug}.svg"
+    if not path.exists():
+        ICONS.mkdir(exist_ok=True)
+        path.write_bytes(_get(f"https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/{slug}.svg"))
+    return re.search(r' d="([^"]+)"', path.read_text()).group(1)
+
+
 def esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -83,10 +110,23 @@ def wrap(text: str, size: float, width: float, em: float = 0.53) -> list[str]:
     return lines
 
 
-def frame(w: float, h: float, rx: float = 14, dashed: bool = False) -> str:
+def radius() -> float:
+    return float(WINDOWS.get("radius", 14))
+
+
+def border_attrs(dashed: bool = False) -> str:
+    """Stroke for a window frame, per windows.border: solid, dashed or none."""
+    style = "dashed" if dashed else WINDOWS.get("border", "solid")
+    if style == "none":
+        return 'stroke="none"'
+    dash = ' stroke-dasharray="5 5"' if style == "dashed" else ""
+    return f'stroke="{LINE}"{dash}'
+
+
+def frame(w: float, h: float, rx: float | None = None, dashed: bool = False) -> str:
     """The flat card every block sits on: background plus a hairline border."""
-    dash = ' stroke-dasharray="5 5"' if dashed else ""
-    return f'<rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{rx}" fill="{BG}" stroke="{LINE}"{dash}/>'
+    rx = radius() if rx is None else rx
+    return f'<rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{rx}" fill="{BG}" {border_attrs(dashed)}/>'
 
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
