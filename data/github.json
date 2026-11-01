@@ -2118,10 +2118,10 @@
     },
     "repository": {
      "languages": {
-      "totalSize": 32589,
+      "totalSize": 36999,
       "edges": [
        {
-        "size": 32589,
+        "size": 36999,
         "node": {
          "name": "Python",
          "color": "#3572A5"
@@ -2190,7 +2190,7 @@
        "history": {
         "nodes": [
          {
-          "messageHeadline": "chore: refresh live cards"
+          "messageHeadline": "feat: config-driven profile with live top-repos projects"
          }
         ]
        }
@@ -2208,7 +2208,7 @@
    "url": "https://github.com/UberSpy0/UberSpy0",
    "description": null,
    "stargazerCount": 0,
-   "pushedAt": "2026-11-01T22:01:47Z",
+   "pushedAt": "2026-11-01T22:21:25Z",
    "primaryLanguage": {
     "name": "Python",
     "color": "#3572A5"
@@ -2262,5 +2262,5 @@
    }
   }
  ],
- "fetched": "2026-11-01T22:19:47+00:00"
+ "fetched": "2026-11-01T22:21:35+00:00"
 }
