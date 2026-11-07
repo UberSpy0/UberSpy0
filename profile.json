@@ -194,10 +194,10 @@
     "telegram": "fab_butt"
   },
   "companion": {
-    "enabled": false,
-    "size": 34,
-    "opacity": 0.85,
-    "cycle": 120,
+    "enabled": true,
+    "size": 45,
+    "opacity": 0.3,
+    "cycle": 40,
     "order": "random",
     "faces": true,
     "phrases_on": true,
@@ -217,8 +217,10 @@
       "ooh, shiny",
       "let's break something"
     ],
-    "skip": [],
-    "seed": 1,
+    "skip": [
+      "projects"
+    ],
+    "seed": 2,
     "colors": {
       "hair": "#FF3E7F",
       "tips": "#4BFF6E",
