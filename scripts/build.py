@@ -78,6 +78,7 @@ def hero() -> None:
 
 
 def main() -> None:
+    import companion
     import live
     from projects import projects
     from readme import readme
@@ -97,6 +98,7 @@ def main() -> None:
     write("now.svg", live.now_card(data))
     repos = projects(data)
     readme(repos)
+    companion.apply()  # last: she is drawn on top of the finished pictures
 
 
 if __name__ == "__main__":

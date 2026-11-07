@@ -5,11 +5,31 @@
   "path": "~/uberspy0",
   "place": "NUST MISIS  ·  Moscow  ·  from Krasnodar",
   "roles": [
-    {"text": "ML Engineer", "keyword": "ML", "color": "green"},
-    {"text": "Rust Developer", "keyword": "Rust", "color": "rust"},
-    {"text": "Frontend Designer", "keyword": "Frontend", "color": "front"},
-    {"text": "Cybersecurity", "keyword": "Cybersecurity", "color": "blue"},
-    {"text": "Competitive Programmer", "keyword": "Competitive", "color": "orange"}
+    {
+      "text": "ML Engineer",
+      "keyword": "ML",
+      "color": "green"
+    },
+    {
+      "text": "Rust Developer",
+      "keyword": "Rust",
+      "color": "rust"
+    },
+    {
+      "text": "Frontend Designer",
+      "keyword": "Frontend",
+      "color": "front"
+    },
+    {
+      "text": "Cybersecurity",
+      "keyword": "Cybersecurity",
+      "color": "blue"
+    },
+    {
+      "text": "Competitive Programmer",
+      "keyword": "Competitive",
+      "color": "orange"
+    }
   ],
   "colors": {
     "bg": "#0A0C16",
@@ -30,12 +50,36 @@
     "telegram": "#26A5E4"
   },
   "sections": [
-    {"id": "about", "title": "About", "show": true},
-    {"id": "projects", "title": "Projects", "show": true},
-    {"id": "achievements", "title": "Achievements", "show": true},
-    {"id": "stack", "title": "Stack", "show": true},
-    {"id": "activity", "title": "Activity", "show": true},
-    {"id": "contact", "title": "Contact", "show": true}
+    {
+      "id": "about",
+      "title": "About",
+      "show": true
+    },
+    {
+      "id": "projects",
+      "title": "Projects",
+      "show": true
+    },
+    {
+      "id": "achievements",
+      "title": "Achievements",
+      "show": true
+    },
+    {
+      "id": "stack",
+      "title": "Stack",
+      "show": true
+    },
+    {
+      "id": "activity",
+      "title": "Activity",
+      "show": true
+    },
+    {
+      "id": "contact",
+      "title": "Contact",
+      "show": true
+    }
   ],
   "effects": {
     "hero_line": true,
@@ -68,7 +112,11 @@
     "🎨 I design and build interfaces and look at products through a marketing-analytics lens"
   ],
   "projects": {
-    "exclude": ["Python_Labs", "UberSpy0", "ML-Practice-Repo"],
+    "exclude": [
+      "Python_Labs",
+      "UberSpy0",
+      "ML-Practice-Repo"
+    ],
     "include_contributed": true,
     "notes": {
       "nighttcrawlerr/ShortHack": {
@@ -78,7 +126,12 @@
         "badge_color": "amber",
         "body": "AI support assistant: drafts an answer from the knowledge base, then fact-checks every claim against its sources.",
         "role": "Frontend, UI design and a ticket classifier fine-tuned on YandexGPT-5-Pro. Team of 4.",
-        "chips": ["YandexGPT-5-Pro", "React", "FastAPI", "Claude Code"]
+        "chips": [
+          "YandexGPT-5-Pro",
+          "React",
+          "FastAPI",
+          "Claude Code"
+        ]
       },
       "UberSpy0/VST-plugin-based-on-Rust": {
         "title": "Rust VST Plugin",
@@ -86,23 +139,93 @@
         "badge": "In progress",
         "badge_color": "violet",
         "body": "A music plugin for Ableton Live and FL Studio: real-time sound processing on the audio thread, packaged as VST3 and CLAP.",
-        "chips": ["Rust", "DSP", "VST3", "CLAP"]
+        "chips": [
+          "Rust",
+          "DSP",
+          "VST3",
+          "CLAP"
+        ]
       }
     }
   },
   "achievements": [
-    {"meta": "2026 · Hackathon", "name": "ShortHack × SberTech", "result": "2nd place", "color": "amber",
-     "desc": "SaluteAgent, an AI support assistant. My part: frontend, design and the YandexGPT-5-Pro classifier."},
-    {"meta": "2026 · Hackathon", "name": "Ostrovok Hackathon", "result": "Shipped", "color": "green",
-     "desc": "Hotel facts search for the Sochi coast and Krasnaya Polyana. My part: noise and geo models."},
-    {"meta": "2026 · Olympiad", "name": "ICPC", "result": "1/8 stage", "color": "cyan",
-     "desc": "International Collegiate Programming Contest: algorithmic problems against the clock."},
-    {"meta": "2024 · Robotics", "name": "RoboFinist", "result": "3rd place", "color": "amber",
-     "desc": "Habitat: Exploring the Red Planet. Robot assembly and Arduino / C++ modules."},
-    {"meta": "2023 · Robotics", "name": "RoboFinist", "result": "3rd place ×2", "color": "amber",
-     "desc": "Underwater robotics and MGBot × R:ED Habitat. Robot assembly and Arduino / C++ modules."}
+    {
+      "meta": "2026 · Hackathon",
+      "name": "ShortHack × SberTech",
+      "result": "2nd place",
+      "color": "amber",
+      "desc": "SaluteAgent, an AI support assistant. My part: frontend, design and the YandexGPT-5-Pro classifier."
+    },
+    {
+      "meta": "2026 · Hackathon",
+      "name": "Ostrovok Hackathon",
+      "result": "Shipped",
+      "color": "green",
+      "desc": "Hotel facts search for the Sochi coast and Krasnaya Polyana. My part: noise and geo models."
+    },
+    {
+      "meta": "2026 · Olympiad",
+      "name": "ICPC",
+      "result": "1/8 stage",
+      "color": "cyan",
+      "desc": "International Collegiate Programming Contest: algorithmic problems against the clock."
+    },
+    {
+      "meta": "2024 · Robotics",
+      "name": "RoboFinist",
+      "result": "3rd place",
+      "color": "amber",
+      "desc": "Habitat: Exploring the Red Planet. Robot assembly and Arduino / C++ modules."
+    },
+    {
+      "meta": "2023 · Robotics",
+      "name": "RoboFinist",
+      "result": "3rd place ×2",
+      "color": "amber",
+      "desc": "Underwater robotics and MGBot × R:ED Habitat. Robot assembly and Arduino / C++ modules."
+    }
   ],
-  "achievements_next": {"name": "More on the way", "desc": "New hackathons and olympiads land here."},
+  "achievements_next": {
+    "name": "More on the way",
+    "desc": "New hackathons and olympiads land here."
+  },
   "achievements_note": "RoboFinist is on Russia's official list of school olympiads.",
-  "contact": {"telegram": "fab_butt"}
+  "contact": {
+    "telegram": "fab_butt"
+  },
+  "companion": {
+    "enabled": false,
+    "size": 34,
+    "opacity": 0.85,
+    "cycle": 120,
+    "order": "random",
+    "faces": true,
+    "phrases_on": true,
+    "phrases": [
+      "hi, choom",
+      "boo!",
+      "don't mind me",
+      "I live here now",
+      "nice commits",
+      "zap!",
+      "hehe",
+      "beep?",
+      "404: chill not found",
+      "who's this cutie?",
+      "rm -rf boredom",
+      "brrrt",
+      "ooh, shiny",
+      "let's break something"
+    ],
+    "skip": [],
+    "seed": 1,
+    "colors": {
+      "hair": "#FF3E7F",
+      "tips": "#4BFF6E",
+      "visor": "#4BFF6E",
+      "eyes": "#3DA9FF",
+      "body": "#07070C",
+      "outline": "#FF3E7F"
+    }
+  }
 }
